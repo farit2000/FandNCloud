@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using FandNCloud.Services.Identity.Domain.Services;
 
 namespace FandNCloud.Services.Identity.Domain
 {

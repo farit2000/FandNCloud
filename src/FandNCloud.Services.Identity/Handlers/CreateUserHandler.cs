@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FandNCloud.Common.Commands;
 using FandNCloud.Common.Events;
 using FandNCloud.Common.Exceptions;
+using FandNCloud.Services.Identity.Domain.Database;
 using FandNCloud.Services.Identity.Services;
 using Microsoft.Extensions.Logging;
 using RawRabbit;
@@ -26,14 +27,13 @@ namespace FandNCloud.Services.Identity.Handlers
 
         public async Task HandleAsync(CreateUser command)
         {
-            _logger.LogInformation($"Creating user: '{command.Email}' with name: '{command.FirstName}'.");
+            _logger.LogInformation($"Creating user: '{command.Email}' with firstname: '{command.FirstName}'.");
             try 
             {
-                await _userService.RegisterAsync(command.Email, command.Password, command.FirstName);
-                // await _busClient.PublishAsync(new UserCreated(command.Email, command.FirstName));
+                await _userService.RegisterAsync(command.Email, command.Password, command.FirstName, command.LastName);
+                // UserCreated should be published once user has been created
+                await _busClient.PublishAsync(new UserCreated(command.Email, command.FirstName, command.LastName));
                 _logger.LogInformation($"User: '{command.Email}' was created with name: '{command.FirstName}'.");
-
-                return;
             }
             catch (ActioException ex)
             {
