@@ -21,17 +21,22 @@ namespace FandNCloud.Services.BasketActivities.Services
         protected override async Task CustomSeedAsync()
         {
             var userId = Guid.NewGuid();
+            Console.WriteLine(userId.ToString());
             var items = new List<BasketBlock>
             {
-                new BasketBlock(Guid.NewGuid(), userId, "test1@ya.ru", new List<BasketItem>
+                new BasketBlock(userId, "test1@ya.ru", "test" ,
+                    new List<BasketFile>
                 {
-                    new BasketItem("home", "Folder", null, null),
-                    new BasketItem("downloads", "Folder", ",home,", null),
-                    new BasketItem("books", "Folder", ",home,", null),
-                    new BasketItem("films", "Folder", ",home,downloads,", null),
-                    new BasketItem("games", "Folder", ",home,downloads,", null),
-                    new BasketItem("gta", "File", ",home,downloads,games,", ".exe"),
-                    new BasketItem("c#", "File", ",home,books,", ".pdf")
+                    new BasketFile("gta", ",home,downloads,games,", ".exe"),
+                    new BasketFile("c#", ",home,books,", ".pdf")
+                }, 
+                new List<BasketFolder>
+                {
+                    new BasketFolder("home", null),
+                    new BasketFolder("downloads", ",home,"),
+                    new BasketFolder("books", ",home,"),
+                    new BasketFolder("films", ",home,downloads,"),
+                    new BasketFolder("games", ",home,downloads,"),
                 })
             };
             await Task.WhenAll(items.Select(x => _basketBlockRepository

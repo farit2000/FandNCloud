@@ -2,10 +2,13 @@ using System;
 using FandNCloud.Common.Commands;
 using FandNCloud.Common.Events;
 using FandNCloud.Common.RabbitMq;
+using FandNCloud.Common.Requests;
+using FandNCloud.Common.Responds;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using RawRabbit;
 
 namespace FandNCloud.Common.Services
@@ -91,7 +94,6 @@ namespace FandNCloud.Common.Services
                     var handler = (ICommandHandler<TCommand>)serviceScope.ServiceProvider.GetService(typeof(ICommandHandler<TCommand>));
 
                     _bus.WithCommandHandlerAsync(handler);
-
                     return this;
                 }
             }
@@ -108,7 +110,17 @@ namespace FandNCloud.Common.Services
                     var handler = (IEventHandler<TEvent>)serviceScope.ServiceProvider.GetService(typeof(IEventHandler<TEvent>));
 
                     _bus.WithEventHandlerAsync(handler);
+                    return this;
+                }
+            }
 
+            public BusBuilder SubscribeToRequest<TRequest>() where TRequest : IRequest
+            {
+                using (var serviceScope = _webHost.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    var handler = (IRequestHandler<TRequest>)serviceScope.ServiceProvider.GetService(typeof(IRequestHandler<TRequest>));
+
+                    _bus.WithRequestHandlerAsync(handler);
                     return this;
                 }
             }

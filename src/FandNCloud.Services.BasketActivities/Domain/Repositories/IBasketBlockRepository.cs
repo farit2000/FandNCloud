@@ -6,8 +6,9 @@ namespace FandNCloud.Services.BasketActivities.Domain.Repositories
 {
     public interface IBasketBlockRepository
     {
-        Task<BasketBlock> GetAsync(Guid id);
+        Task<BasketBlock> GetAsync(Guid userId);
+        Task<BasketBlock> GetAsync(string userEmail);
         Task AddAsync(BasketBlock basketBlock);
-        Task RemoveAsync(Guid id);
+        Task RemoveAsync(Guid userId);
     }
 }
