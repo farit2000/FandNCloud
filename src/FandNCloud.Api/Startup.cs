@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FandNCloud.Api.Handlers;
 using FandNCloud.Api.Services;
 using FandNCloud.Common.Events;
 using FandNCloud.Common.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -59,9 +53,11 @@ namespace FandNCloud.Api
 
             app.UseHttpsRedirection();
             
-            app.UseCors("VueCorsPolicy");
             
             app.UseRouting();
+            
+            app.UseCors("VueCorsPolicy");
+            
 
             app.UseAuthorization();
 

@@ -12,7 +12,7 @@ namespace FandNCloud.Common.Events
             
         }
 
-        public UserCreated(string email, string firstName, string lastName, string role)
+        public UserCreated(string email, string firstName, string lastName, string role=null)
         {
             Email = email;
             FirstName = firstName;
