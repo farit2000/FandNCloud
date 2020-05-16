@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FandNCloud.Api.Handlers;
+using FandNCloud.Api.Services;
 using FandNCloud.Common.Events;
 using FandNCloud.Common.RabbitMq;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RestEase;
 
 namespace FandNCloud.Api
 {
@@ -32,6 +34,8 @@ namespace FandNCloud.Api
             // services.AddControllers();
             services.AddRabbitMq(Configuration);
             services.AddScoped<IEventHandler<BasketActivityCreated>, BasketActivityCreatedHandler>();
+            services.AddScoped<IBasketActivitiesService>(c =>
+                RestClient.For<IBasketActivitiesService>("http://localhost:5050"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

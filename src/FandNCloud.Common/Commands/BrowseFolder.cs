@@ -2,7 +2,7 @@ using System;
 
 namespace FandNCloud.Common.Commands
 {
-    public class DeleteFolder : IAuthenticatedCommand
+    public class BrowseFolder
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }

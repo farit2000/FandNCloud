@@ -9,25 +9,29 @@ namespace FandNCloud.Services.BasketActivities.Services
     public class BasketBlockService : IBasketBlockService
     {
         private readonly IBasketBlockRepository _basketBlockRepository;
-        private readonly IBasketItemRepository _basketItemRepository;
+        // private readonly IBasketItemRepository _basketItemRepository;
 
-        public BasketBlockService(IBasketBlockRepository basketBlockRepository,
-            IBasketItemRepository basketItemRepository)
+        public BasketBlockService(IBasketBlockRepository basketBlockRepository)
         {
             _basketBlockRepository = basketBlockRepository;
-            _basketItemRepository = basketItemRepository;
         }
         
-        public async Task AddAsync(Guid id, Guid userId, string userEmail, List<BasketItem> items)
+        public async Task AddAsync(Guid userId, string userEmail, string containerName, List<BasketFile> files,
+            List<BasketFolder> folders)
         {
-            var basketBlock = new BasketBlock(id, userId, userEmail, items);
+            var basketBlock = new BasketBlock(userId, userEmail, containerName, files, folders);
             await _basketBlockRepository.AddAsync(basketBlock);
         }
 
-        public async Task AddAsync(Guid id, Guid userId, string userEmail)
+        public async Task AddAsync(Guid userId, string userEmail, string containerName)
         {
-            var basketBlock = new BasketBlock(id, userId, userEmail);
+            var basketBlock = new BasketBlock(userId, userEmail, containerName);
             await _basketBlockRepository.AddAsync(basketBlock);
+        }
+
+        public Task<BasketBlock> GetAsync(Guid userId)
+        {
+            return _basketBlockRepository.GetAsync(userId);
         }
     }
 }
