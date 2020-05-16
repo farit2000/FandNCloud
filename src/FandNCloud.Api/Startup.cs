@@ -31,6 +31,17 @@ namespace FandNCloud.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("VueCorsPolicy", builder =>
+                {
+                    builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:8080");
+                });
+            });
             // services.AddControllers();
             services.AddRabbitMq(Configuration);
             services.AddScoped<IEventHandler<BasketActivityCreated>, BasketActivityCreatedHandler>();
@@ -47,7 +58,9 @@ namespace FandNCloud.Api
             }
 
             app.UseHttpsRedirection();
-
+            
+            app.UseCors("VueCorsPolicy");
+            
             app.UseRouting();
 
             app.UseAuthorization();
