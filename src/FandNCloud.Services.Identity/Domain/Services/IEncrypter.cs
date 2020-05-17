@@ -1,4 +1,4 @@
-namespace FandNCloud.Services.Identity.Domain
+namespace FandNCloud.Services.Identity.Domain.Services
 {
     public interface IEncrypter
     {

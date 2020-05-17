@@ -8,7 +8,9 @@ namespace FandNCloud.Services.BasketActivities.Domain.Models
         public Guid Id { get; protected set; }
         public Guid UserId { get; protected set; }
         public string UserEmail { get; protected set; }
-        public List<BasketItem> Items { get; protected set; }
+        public string ContainerName { get; protected set; }
+        public List<BasketFolder> Folders { get; protected set; }
+        public List<BasketFile> Files { get; protected set; }
         public DateTime CreatedDate { get; protected set; }
         public DateTime LastChangeDate { get; protected set; }
         
@@ -17,23 +19,29 @@ namespace FandNCloud.Services.BasketActivities.Domain.Models
             
         }
         
-        public BasketBlock(Guid id, Guid userId, string userEmail)
+        public BasketBlock(Guid userId, string userEmail, string containerName)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             UserId = userId;
+            ContainerName = containerName;
             UserEmail = userEmail;
+            Folders = new List<BasketFolder>();
+            Files = new List<BasketFile>();
             CreatedDate = DateTime.Now;
             LastChangeDate = DateTime.Now;
         }
     
-        public BasketBlock(Guid id, Guid userId, string userEmail, List<BasketItem> items)
+        public BasketBlock(Guid userId, string userEmail, string containerName, List<BasketFile> files,
+            List<BasketFolder> folders)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             UserId = userId;
+            ContainerName = containerName;
             UserEmail = userEmail;
-            Items = items;
-            CreatedDate = DateTime.Now;
-            LastChangeDate = DateTime.Now;
+            Files = files;
+            Folders = folders;
+            CreatedDate = DateTime.UtcNow;
+            LastChangeDate = DateTime.UtcNow;
         }
     }
     

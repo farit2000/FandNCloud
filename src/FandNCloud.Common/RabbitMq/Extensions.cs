@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using FandNCloud.Common.Commands;
 using FandNCloud.Common.Events;
+using FandNCloud.Common.Requests;
+using FandNCloud.Common.Responds;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RawRabbit;
@@ -23,6 +25,12 @@ namespace FandNCloud.Common.RabbitMq
             => bus.SubscribeAsync<TEvent>(msg => handler.HandleAsync(msg),
                 ctx => ctx.UseSubscribeConfiguration(cfg =>
                     cfg.FromDeclaredQueue(q => q.WithName(GetQueueName<TEvent>()))));
+
+        public static Task WithRequestHandlerAsync<TRequest>(this IBusClient busClient,
+            IRequestHandler<TRequest> requestHandler) where TRequest : IRequest
+            => busClient.RespondAsync<TRequest, IRespond>(msg => requestHandler.HandleAsync(msg),
+                ctx => ctx.UseRespondConfiguration(cfg => cfg.FromDeclaredQueue(q =>
+                    q.WithName(GetQueueName<TRequest>()))));
 
         private static string GetQueueName<T>()
             => $"{Assembly.GetEntryAssembly().GetName()}/{typeof(T).Name}";

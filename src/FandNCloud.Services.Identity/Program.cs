@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FandNCloud.Common.Commands;
+using FandNCloud.Common.Requests;
 using FandNCloud.Common.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace FandNCloud.Services.Identity
 {
@@ -18,6 +11,12 @@ namespace FandNCloud.Services.Identity
             ServiceHost.Create<Startup>(args)
                 .UseRabbitMq()
                 .SubscribeToCommand<CreateUser>()
+                .SubscribeToCommand<LogoutUserCommand>()
+                
+                .SubscribeToRequest<LoginUserRequest>()
+                .SubscribeToRequest<RefreshUserRequest>()
+                .SubscribeToRequest<IsAuthorizedRequest>()
+                
                 .Build()
                 .Run();
         }
