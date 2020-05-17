@@ -25,6 +25,8 @@ namespace FandNCloud.Services.BasketActivities.Domain.Models
             UserId = userId;
             ContainerName = containerName;
             UserEmail = userEmail;
+            Folders = new List<BasketFolder>();
+            Files = new List<BasketFile>();
             CreatedDate = DateTime.Now;
             LastChangeDate = DateTime.Now;
         }

@@ -8,6 +8,6 @@ namespace FandNCloud.Services.BasketActivities.Services
         Task<string> GetBlobSasUriDeleteAsync(string containerName, string blobName);
         Task<string> GetBlobSasUriAddAsync(string containerName, string blobName);
 
-        Task AddNewBlobAsync(string containerName);
+        Task AddNewBlobContainerAsync(string containerName);
     }
 }

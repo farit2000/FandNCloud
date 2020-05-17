@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using FandNCloud.Common.Commands;
+using FandNCloud.Common.Exceptions;
+using FandNCloud.Services.BasketActivities.Domain.Models;
 using FandNCloud.Services.BasketActivities.Services;
 using Microsoft.Extensions.Logging;
 
@@ -15,9 +18,23 @@ namespace FandNCloud.Services.BasketActivities.Handlers
             _folderService = folderService;
             _logger = logger;
         }
-        public Task HandleAsync(CreateFolder command)
+        public async Task HandleAsync(CreateFolder command)
         {
-            throw new System.NotImplementedException();
+            _logger.LogInformation($"Creating folder: '{command.Id}' for user: '{command.UserId}'.");
+            try
+            {
+                await _folderService.AddAsync(command.UserId,
+                    new BasketFolder(command.Name, command.Path));
+            }
+            catch (ActioException e)
+            {
+                _logger.LogError(e, e.Message);
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
         }
     }
 }

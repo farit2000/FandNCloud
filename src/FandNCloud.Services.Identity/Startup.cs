@@ -2,6 +2,7 @@ using System;
 using FandNCloud.Common.Auth;
 using FandNCloud.Common.Commands;
 using FandNCloud.Common.RabbitMq;
+using FandNCloud.Common.Requests;
 using FandNCloud.Services.Identity.Domain;
 using FandNCloud.Services.Identity.Domain.Database;
 using FandNCloud.Services.Identity.Domain.Models;
@@ -57,6 +58,11 @@ namespace FandNCloud.Services.Identity
             services.AddScoped<IInvalidTokenRepository, InvalidTokenRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
+            services.AddScoped<ICommandHandler<LogoutUserCommand>, LogoutUserHandler>();
+            
+            services.AddScoped<IRequestHandler<LoginUserRequest>, LoginUserHandler>();
+            services.AddScoped<IRequestHandler<RefreshUserRequest>, RefreshUserHandler>();
+            services.AddScoped<IRequestHandler<IsAuthorizedRequest>, IsAuthorizedHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

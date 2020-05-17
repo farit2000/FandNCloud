@@ -12,6 +12,7 @@ namespace FandNCloud.Services.Identity.Attributes
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var invalidTokenRepository = (IInvalidTokenRepository)context.HttpContext.RequestServices.GetService(typeof(IInvalidTokenRepository));
+            var t = context.HttpContext.Request.Headers;
             var field = context.HttpContext.Request.Headers[HeaderNames.Authorization];
             if (field.Count == 0)
             {

@@ -32,7 +32,7 @@ namespace FandNCloud.Services.Identity.Controllers
             => Json(await _userService.LoginAsync(request.Email, request.Password));
         
         // [JwtAuthorize]
-        [ValidateActionParameters]
+        [ValidateActionParameters] 
         [HttpPost("logout")]
         [Consumes("application/x-www-form-urlencoded")]
         public async void Logout([FromHeader(Name="Authorization")] [Required] string accessToken, [Required] string refreshToken)

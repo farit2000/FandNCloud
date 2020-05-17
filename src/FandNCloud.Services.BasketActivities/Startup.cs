@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using FandNCloud.Common.Mongo;
 using FandNCloud.Common.Commands;
+using FandNCloud.Common.Events;
 using FandNCloud.Common.RabbitMq;
 using FandNCloud.Common.Requests;
 using FandNCloud.Common.Responds;
@@ -62,7 +63,8 @@ namespace FandNCloud.Services.BasketActivities
             services.AddScoped<ICommandHandler<CreateFolder>, CreateFolderHandler>();
             services.AddScoped<ICommandHandler<DeleteFolder>, DeleteFolderHandler>();
             services.AddScoped<ICommandHandler<DeleteFile>, DeleteFileHandler>();
-            services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
+            
+            services.AddScoped<IEventHandler<UserCreated>, CreateUserHandler>();
             
 
             services.AddScoped<IRequestHandler<BrowseFolderRequest>, BrowseFolderHandler>();

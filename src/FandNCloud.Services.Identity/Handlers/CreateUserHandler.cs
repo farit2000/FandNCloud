@@ -30,9 +30,9 @@ namespace FandNCloud.Services.Identity.Handlers
             _logger.LogInformation($"Creating user: '{command.Email}' with firstname: '{command.FirstName}'.");
             try 
             {
-                await _userService.RegisterAsync(command.Email, command.Password, command.FirstName, command.LastName);
+                var user = await _userService.RegisterAsync(command.Email, command.Password, command.FirstName, command.LastName);
                 // UserCreated should be published once user has been created
-                await _busClient.PublishAsync(new UserCreated(command.Email, command.FirstName, command.LastName));
+                await _busClient.PublishAsync(new UserCreated(user.Id, command.Email, command.FirstName, command.LastName));
                 _logger.LogInformation($"User: '{command.Email}' was created with name: '{command.FirstName}'.");
             }
             catch (ActioException ex)

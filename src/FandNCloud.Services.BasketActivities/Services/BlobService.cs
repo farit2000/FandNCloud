@@ -33,17 +33,12 @@ namespace FandNCloud.Services.BasketActivities.Services
         public async Task<string> GetBlobSasUriAddAsync(string containerName, string blobName)
         {
             return GetSasForBlob(_blobClient.GetContainerReference(containerName).GetBlockBlobReference(blobName),
-                SharedAccessBlobPermissions.Add, 15);
+                SharedAccessBlobPermissions.Write, 15);
         }
 
-        public async Task AddNewBlobAsync(string containerName)
+        public async Task AddNewBlobContainerAsync(string containerName)
         {
             var container = _blobClient.GetContainerReference(containerName);
-            BlobContainerPermissions permissions = new BlobContainerPermissions
-            {
-                PublicAccess = BlobContainerPublicAccessType.Blob
-            };
-            await container.SetPermissionsAsync(permissions);
             await container.CreateIfNotExistsAsync();
         }
 

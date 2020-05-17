@@ -1,5 +1,6 @@
 using FandNCloud.Api.Handlers;
 using FandNCloud.Api.Services;
+using FandNCloud.Common.Auth;
 using FandNCloud.Common.Events;
 using FandNCloud.Common.RabbitMq;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace FandNCloud.Api
             });
             // services.AddControllers();
             services.AddRabbitMq(Configuration);
+            services.AddJwt(Configuration);
             services.AddScoped<IEventHandler<BasketActivityCreated>, BasketActivityCreatedHandler>();
             services.AddScoped<IBasketActivitiesService>(c =>
                 RestClient.For<IBasketActivitiesService>("http://localhost:5050"));
@@ -58,7 +60,7 @@ namespace FandNCloud.Api
             
             app.UseCors("VueCorsPolicy");
             
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

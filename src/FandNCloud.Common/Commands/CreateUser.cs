@@ -1,3 +1,5 @@
+using System;
+
 namespace FandNCloud.Common.Commands
 {
     public class CreateUser : ICommand

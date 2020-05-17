@@ -34,7 +34,7 @@ namespace FandNCloud.Services.Identity.Services
             _jwtHandler = jwtHandler;
         }
 
-        public async Task RegisterAsync(string email, string password, string firstName, string lastName)
+        public async Task<User> RegisterAsync(string email, string password, string firstName, string lastName)
         {
             var user = await _userRepository.GetAsync(email);
             if (user != null)
@@ -44,6 +44,8 @@ namespace FandNCloud.Services.Identity.Services
             user = new User(email, firstName, lastName);
             user.SetPassword(password, _encrypter);
             await _userRepository.AddAsync(user);
+            var userEntity = await _userRepository.GetAsync(user.Email);
+            return userEntity;
         }
 
         public async Task<JsonWebToken> LoginAsync(string email, string password)

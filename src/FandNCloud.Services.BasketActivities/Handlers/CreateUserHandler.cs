@@ -1,12 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using FandNCloud.Common.Commands;
+using FandNCloud.Common.Events;
 using FandNCloud.Services.BasketActivities.Services;
 using Microsoft.Extensions.Logging;
 
 namespace FandNCloud.Services.BasketActivities.Handlers
 {
-    public class CreateUserHandler : ICommandHandler<CreateUser>
+    public class CreateUserHandler : IEventHandler<UserCreated>
     {
         private readonly IBasketBlockService _basketBlockService;
         private readonly IBlobService _blobService;
@@ -19,11 +20,11 @@ namespace FandNCloud.Services.BasketActivities.Handlers
             _blobService = blobService;
             _logger = logger;
         }
-        public async Task HandleAsync(CreateUser command)
+
+        public async Task HandleAsync(UserCreated @event)
         {
-            var userId = Guid.NewGuid();
-            await _basketBlockService.AddAsync(userId, command.Email, userId.ToString());
-            await _blobService.AddNewBlobAsync(userId.ToString());
+            await _basketBlockService.AddAsync(@event.UserId, @event.Email, @event.UserId.ToString());
+            await _blobService.AddNewBlobContainerAsync(@event.UserId.ToString());
         }
     }
 }
