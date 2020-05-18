@@ -1,16 +1,17 @@
 using System;
 using System.Threading.Tasks;
-using FandNCloud.Common.Commands;
 using FandNCloud.Common.Events;
 using FandNCloud.Common.Exceptions;
-using FandNCloud.Services.Identity.Domain.Database;
+using FandNCloud.Common.Requests;
+using FandNCloud.Common.Responds;
 using FandNCloud.Services.Identity.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RawRabbit;
 
 namespace FandNCloud.Services.Identity.Handlers
 {
-    public class CreateUserHandler : ICommandHandler<CreateUser>
+    public class CreateUserHandler : IRequestHandler<CreateUserRequest>
     {
         private readonly ILogger _logger;
         private readonly IBusClient _busClient;
@@ -18,35 +19,30 @@ namespace FandNCloud.Services.Identity.Handlers
 
         public CreateUserHandler(IBusClient busClient,
             IUserService userService, 
-            ILogger<CreateUser> logger)
+            ILogger<CreateUserRequest> logger)
         {
             _busClient = busClient;
             _userService = userService;
             _logger = logger;
         }
 
-        public async Task HandleAsync(CreateUser command)
+        public async Task<IRespond> HandleAsync(CreateUserRequest request)
         {
-            _logger.LogInformation($"Creating user: '{command.Email}' with firstname: '{command.FirstName}'.");
+            _logger.LogInformation($"Creating user: '{request.Email}' with firstname: '{request.FirstName}'.");
             try 
             {
-                var user = await _userService.RegisterAsync(command.Email, command.Password, command.FirstName, command.LastName);
+                var user = await _userService.RegisterAsync(request.Email, request.Password, request.FirstName, request.LastName);
                 // UserCreated should be published once user has been created
-                await _busClient.PublishAsync(new UserCreated(user.Id, command.Email, command.FirstName, command.LastName));
-                _logger.LogInformation($"User: '{command.Email}' was created with name: '{command.FirstName}'.");
-            }
-            catch (ActioException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                await _busClient.PublishAsync(new CreateUserRejected(command.Email,
-                    ex.Message, ex.Code)); 
+                await _busClient.PublishAsync(new UserCreated(user.Id, request.Email, request.FirstName, request.LastName));
+                _logger.LogInformation($"User: '{request.Email}' was created with name: '{request.FirstName}'.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                await _busClient.PublishAsync(new CreateUserRejected(command.Email,
-                    ex.Message, "error"));                
+                return new CreateUserRespond(new BadRequestResult());
             }
+
+            return new CreateUserRespond(new AcceptedResult());
         }
     }
 }
