@@ -84,7 +84,7 @@ namespace FandNCloud.Services.Identity
                 await context.Response.WriteAsync(result);
             }));
             
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             
             app.UseRouting();
             
