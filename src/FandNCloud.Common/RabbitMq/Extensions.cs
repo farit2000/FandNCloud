@@ -40,7 +40,6 @@ namespace FandNCloud.Common.RabbitMq
             var options = new RabbitMqOptions();
             var section = configuration.GetSection("rabbitmq");
             section.Bind(options);
-            var cl = RawRabbitFactory.CreateSingleton();
             var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
             {
                 ClientConfiguration = options

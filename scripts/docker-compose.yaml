@@ -8,16 +8,18 @@ services:
       - postgres
       - rabbitmq
     command: rabbitmq:5672
-  
+
   api:
     build: ../src/FandNCloud.Api
+    restart: on-failure
     links:
       - rabbitmq
     ports:
-      - "5000:5000"
+      - "5001:5001"
 
   activities-service:
     build: ../src/FandNCloud.Services.BasketActivities
+    restart: on-failure
     links:
       - rabbitmq
       - mongo
@@ -26,6 +28,7 @@ services:
 
   identity-service:
     build: ../src/FandNCloud.Services.Identity
+    restart: on-failure
     links:
       - rabbitmq
       - postgres
@@ -38,7 +41,7 @@ services:
       - ./data/db:/data/db
     ports:
       - "27017:27017"
-  
+
   postgres:
     image: postgres
     restart: always
@@ -49,10 +52,10 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
-    - "5432:5432"
+      - "5432:5432"
 
   rabbitmq:
-    image: rabbitmq:3.8.3-management-alpine
+    image: rabbitmq:3-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"

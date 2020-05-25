@@ -52,11 +52,11 @@ namespace FandNCloud.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            // else
-            // {
-            //     app.UseHsts();
-            // }
-            // app.UseHttpsRedirection();
+            else
+            {
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("VueCorsPolicy");
             app.UseAuthentication();
