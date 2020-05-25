@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 
 services:
   start-dependencies:
@@ -11,24 +11,35 @@ services:
   
   api:
     build: ../src/FandNCloud.Api
-    links:
-      - rabbitmq
+    restart: on-failure
+#    depends_on:
+#      - rabbitmq
+#    links:
+#      - rabbitmq
     ports:
       - "5000:5000"
 
   activities-service:
     build: ../src/FandNCloud.Services.BasketActivities
-    links:
-      - rabbitmq
-      - mongo
+    restart: on-failure
+#    depends_on:
+#      - rabbitmq
+#      - mongo
+#    links:
+#      - rabbitmq
+#      - mongo
     ports:
       - "5050:5050"
 
   identity-service:
     build: ../src/FandNCloud.Services.Identity
-    links:
-      - rabbitmq
-      - postgres
+    restart: on-failure
+#    depends_on:
+#      - rabbitmq
+#      - postgres
+#    links:
+#      - rabbitmq
+#      - postgres
     ports:
       - "5100:5100"
 
@@ -52,7 +63,7 @@ services:
     - "5432:5432"
 
   rabbitmq:
-    image: rabbitmq:3.8.3-management-alpine
+    image: rabbitmq:3-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
