@@ -10,12 +10,12 @@ namespace FandNCloud.Services.Identity
         {
             ServiceHost.Create<Startup>(args)
                 .UseRabbitMq()
-                .SubscribeToCommand<CreateUser>()
                 .SubscribeToCommand<LogoutUserCommand>()
                 
                 .SubscribeToRequest<LoginUserRequest>()
                 .SubscribeToRequest<RefreshUserRequest>()
                 .SubscribeToRequest<IsAuthorizedRequest>()
+                .SubscribeToRequest<CreateUserRequest>()
                 
                 .Build()
                 .Run();

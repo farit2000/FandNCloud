@@ -87,7 +87,7 @@ namespace FandNCloud.Services.BasketActivities
                 app.UseDeveloperExceptionPage();
             }
             app.ApplicationServices.GetService<IDatabaseInitializer>().InitializeAsync();
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             // app.ApplicationServices.GetService<IDatabaseInitializer>().InitializeAsync();
             app.UseRouting();
 

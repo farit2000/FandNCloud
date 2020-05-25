@@ -41,8 +41,8 @@ namespace FandNCloud.Api
             services.AddRabbitMq(Configuration);
             services.AddJwt(Configuration);
             services.AddScoped<IEventHandler<BasketActivityCreated>, BasketActivityCreatedHandler>();
-            services.AddScoped<IBasketActivitiesService>(c =>
-                RestClient.For<IBasketActivitiesService>("http://localhost:5050"));
+            // services.AddScoped<IBasketActivitiesService>(c =>
+            //     RestClient.For<IBasketActivitiesService>("http://localhost:5050"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,14 +52,13 @@ namespace FandNCloud.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseHsts();
+            }
             app.UseHttpsRedirection();
-            
-            
             app.UseRouting();
-            
             app.UseCors("VueCorsPolicy");
-            
             app.UseAuthentication();
             app.UseAuthorization();
 

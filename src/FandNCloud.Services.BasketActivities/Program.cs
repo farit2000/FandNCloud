@@ -27,8 +27,7 @@ namespace FandNCloud.Services.BasketActivities
                 .SubscribeToCommand<DeleteFile>()
                 .SubscribeToCommand<CreateFolder>()
                 .SubscribeToCommand<DeleteFolder>()
-                .SubscribeToCommand<CreateUser>()
-                
+
                 .SubscribeToRequest<BrowseFolderRequest>()
                 .SubscribeToRequest<SasFileReadRequest>()
                 .SubscribeToRequest<SasFileAddRequest>()

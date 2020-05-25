@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 using FandNCloud.Common.Commands;
 using FandNCloud.Common.Requests;
 using FandNCloud.Common.Responds;
+using FandNCloud.Services.Identity.Attributes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RawRabbit;
 
 namespace FandNCloud.Api.Controllers
 {
+    // [ValidateActionParameters]
     [Route("[controller]")]
     [EnableCors]
     public class UserController : Controller
@@ -22,10 +24,10 @@ namespace FandNCloud.Api.Controllers
 
         [HttpPost("register")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Post([FromForm] CreateUser command)
+        public async Task<IActionResult> Post([FromForm] CreateUserRequest request)
         {
-            await _busClient.PublishAsync(command);
-            return Accepted();
+            var respond = await _busClient.RequestAsync<CreateUserRequest, CreateUserRespond>(request);
+            return respond.Respond;
         }
 
         [HttpPost("login")]

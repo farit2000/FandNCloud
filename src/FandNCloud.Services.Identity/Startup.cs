@@ -57,12 +57,13 @@ namespace FandNCloud.Services.Identity
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IInvalidTokenRepository, InvalidTokenRepository>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
             services.AddScoped<ICommandHandler<LogoutUserCommand>, LogoutUserHandler>();
             
             services.AddScoped<IRequestHandler<LoginUserRequest>, LoginUserHandler>();
             services.AddScoped<IRequestHandler<RefreshUserRequest>, RefreshUserHandler>();
             services.AddScoped<IRequestHandler<IsAuthorizedRequest>, IsAuthorizedHandler>();
+            services.AddScoped<IRequestHandler<IsAuthorizedRequest>, IsAuthorizedHandler>();
+            services.AddScoped<IRequestHandler<CreateUserRequest>, CreateUserHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,7 +84,7 @@ namespace FandNCloud.Services.Identity
                 await context.Response.WriteAsync(result);
             }));
             
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             
             app.UseRouting();
             
