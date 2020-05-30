@@ -23,16 +23,14 @@ namespace FandNCloud.Api.Controllers
         }
 
         [HttpPost("register")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Post([FromForm] CreateUserRequest request)
+        public async Task<IActionResult> Post([FromBody] CreateUserRequest request)
         {
             var respond = await _busClient.RequestAsync<CreateUserRequest, CreateUserRespond>(request);
             return respond.Respond;
         }
 
         [HttpPost("login")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Login([FromForm] LoginUserRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
             var respond = await _busClient.RequestAsync<LoginUserRequest, LoginUserRespond>(request);
             return Json(respond.Result);

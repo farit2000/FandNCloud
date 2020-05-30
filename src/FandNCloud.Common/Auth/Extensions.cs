@@ -25,9 +25,9 @@ namespace FandNCloud.Common.Auth
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        // ValidateIssuer = true,
-                        // ValidateLifetime = true,
-                        // ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
                         ValidateAudience = false,
                         ValidIssuer = options.Issuer,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SecretKey))

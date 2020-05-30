@@ -34,7 +34,8 @@
 [Oo]bj/
 _UpgradeReport_Files/
 [Pp]ackages/
-
+scripts/data/**
+scripts/postgres-data/**
 Thumbs.db
 Desktop.ini
 .DS_Store
