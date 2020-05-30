@@ -24,9 +24,9 @@ namespace FandNCloud.Common.Auth
             _jwtHeader = new JwtHeader(signingCredentials);
             _tokenValidationParameters = new TokenValidationParameters
             {
-                // ValidateIssuer = true,
-                // ValidateLifetime = true,
-                // ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
                 ValidateAudience = false,
                 ValidIssuer = _options.Issuer,
                 IssuerSigningKey = issuerSigningKey

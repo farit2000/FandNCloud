@@ -19,25 +19,21 @@ using RestEase;
 namespace FandNCloud.Api.Controllers
 {
     [Route("[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), JwtAuthorize]
     public class BasketActivityController : Controller
     {
         private readonly IBusClient _busClient;
-        private readonly IBasketActivitiesService _basketActivitiesService;
 
-        public BasketActivityController(IBusClient busClient, IBasketActivitiesService basketActivitiesService)
+        public BasketActivityController(IBusClient busClient)
         {
-            _basketActivitiesService = basketActivitiesService;
             _busClient = busClient;
         }
-
-        [JwtAuthorize]
+        
         [HttpGet("get")]
         public IActionResult Get() => Content(User.Identity.Name);
-
-        [JwtAuthorize]
+        
         [HttpPost("create_folder")]
-        [Consumes("multipart/form-data")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<IActionResult> FolderCreate([FromForm] CreateFolder command)
         {
             var st = User.Identity.Name;
@@ -47,9 +43,8 @@ namespace FandNCloud.Api.Controllers
             return Accepted($"folder/{command.Id}");
         }
         
-        [JwtAuthorize]
         [HttpDelete("delete_folder")]
-        [Consumes("multipart/form-data")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<IActionResult> FolderDelete([FromForm] DeleteFolder command)
         {
             command.UserId = Guid.Parse(User.Identity.Name);
@@ -57,10 +52,9 @@ namespace FandNCloud.Api.Controllers
             await _busClient.PublishAsync(command);
             return Accepted($"folder/{command.Id}");
         }
-
-        [JwtAuthorize]
+        
         [HttpPost("create_file")]
-        [Consumes("multipart/form-data")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<IActionResult> FileCreate([FromForm] CreateFile command)
         {
             command.UserId = Guid.Parse(User.Identity.Name);
@@ -69,9 +63,8 @@ namespace FandNCloud.Api.Controllers
             return Accepted($"file/{command.Id}");
         }
         
-        [JwtAuthorize]
         [HttpDelete("delete_file")]
-        [Consumes("multipart/form-data")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<IActionResult> FileDelete([FromForm] DeleteFile command)
         {
             command.UserId = Guid.Parse(User.Identity.Name);
@@ -79,10 +72,9 @@ namespace FandNCloud.Api.Controllers
             await _busClient.PublishAsync(command);
             return Accepted($"file/{command.Id}");
         }
-
-        [JwtAuthorize]
+        
         [HttpGet("browse_folder")]
-        [Consumes("multipart/form-data")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<BrowseFolderRespond> BrowseFolder([FromForm] BrowseFolder command)
         {
             command.UserId = Guid.Parse(User.Identity.Name);
@@ -91,9 +83,9 @@ namespace FandNCloud.Api.Controllers
                     new BrowseFolderRequest(command.UserId, command.Name, command.Path));
             return filesAndFolders;
         }
-
-        [JwtAuthorize]
+        
         [HttpGet("get_sas_file_read/{blobName}")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<string> GetSasFileRead(string blobName)
         {
             var userId = Guid.Parse(User.Identity.Name);
@@ -103,9 +95,9 @@ namespace FandNCloud.Api.Controllers
                     new SasFileReadRequest(userId, containerName, blobName));
             return fileReadingSas.Url;
         }
-
-        [JwtAuthorize]
+        
         [HttpGet("get_sas_file_delete/{blobName}")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<string> GetSasFileDelete(string blobName)
         {
             var userId = Guid.Parse(User.Identity.Name);
@@ -116,8 +108,8 @@ namespace FandNCloud.Api.Controllers
             return fileReadingSas.Url;
         }
         
-        [JwtAuthorize]
         [HttpGet("get_sas_file_add/{blobName}")]
+        [Consumes("application/x-www-form-urlencoded")]
         public async Task<string> GetSasFileAdd(string blobName)
         {
             var userId = Guid.Parse(User.Identity.Name);

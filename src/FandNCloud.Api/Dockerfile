@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 WORKDIR /dotnetapp
 COPY ./bin/Docker .
-ENV ASPNETCORE_URLS https://*:5001
+ENV ASPNETCORE_URLS http://*:5000
 ENV ASPNETCORE_ENVIRONMENT docker
 ENTRYPOINT ["dotnet", "FandNCloud.Api.dll"]
 
